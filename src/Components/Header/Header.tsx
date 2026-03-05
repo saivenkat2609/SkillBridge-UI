@@ -1,13 +1,15 @@
-import { AppBar, Avatar, Box, Button, Chip, Toolbar, Typography } from "@mui/material";
+import { AppBar, Avatar, Badge, Box, Button, Chip, IconButton, Toolbar, Tooltip, Typography } from "@mui/material";
 import { useNavigate } from "react-router";
-import Search from "./Search";
 import { useAuth } from "../../context/AuthContext";
+import { useChat } from "../../context/ChatContext";
 import AddIcon from "@mui/icons-material/Add";
 import LogoutIcon from "@mui/icons-material/Logout";
+import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 
 export default function Header() {
   const navigate = useNavigate();
   const { userData, logout } = useAuth();
+  const { unreadCount } = useChat();
 
   const handleLogout = async () => {
     await logout();
@@ -79,10 +81,8 @@ export default function Header() {
           </Typography>
         </Box>
 
-        {/* Search */}
-        <Box sx={{ flex: 1, display: "flex", justifyContent: "center" }}>
-          <Search />
-        </Box>
+        {/* Spacer */}
+        <Box sx={{ flex: 1 }} />
 
         {/* Actions */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, flexShrink: 0 }}>
@@ -99,6 +99,20 @@ export default function Header() {
                   Create Skill
                 </Button>
               )}
+
+              <Tooltip title="Messages">
+                <IconButton
+                  onClick={() => navigate("/chat")}
+                  sx={{
+                    color: "#64748b",
+                    "&:hover": { bgcolor: "#f5f3ff", color: "#4f46e5" },
+                  }}
+                >
+                  <Badge badgeContent={unreadCount} color="error" max={99}>
+                    <ChatBubbleOutlineIcon sx={{ fontSize: 22 }} />
+                  </Badge>
+                </IconButton>
+              </Tooltip>
 
               <Box
                 sx={{

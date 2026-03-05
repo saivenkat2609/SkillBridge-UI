@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getSkillById } from "../Queries/skill-queries";
+import { getSkillById, getReviewsBySkillId, type Review } from "../Queries/skill-queries";
 import type { SkillType } from "./SkillsGrid";
 import BookingModal from "../Booking/BookingModal";
 import {
@@ -20,22 +20,15 @@ import VerifiedOutlinedIcon from "@mui/icons-material/VerifiedOutlined";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import StarRoundedIcon from "@mui/icons-material/StarRounded";
 
-const mockReviews = [
-  {
-    name: "Sarah M.",
-    initials: "SM",
-    stars: 5,
-    date: "2 days ago",
-    text: "Excellent teacher! Explained concepts in a very clear and understandable way. Would definitely recommend to anyone starting out.",
-  },
-  {
-    name: "Mike L.",
-    initials: "ML",
-    stars: 4,
-    date: "1 week ago",
-    text: "Great introduction to the subject. Highly recommend for beginners. Sessions were well-structured and engaging.",
-  },
-];
+function timeAgo(dateStr: string) {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return "just now";
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  return `${Math.floor(hrs / 24)}d ago`;
+}
 
 const pricingFeatures = [
   { icon: <CalendarMonthOutlinedIcon sx={{ fontSize: 16 }} />, text: "Instant booking available" },
@@ -45,6 +38,7 @@ const pricingFeatures = [
 
 export default function SkillDetails() {
   const [skillDetails, setSkillDetails] = useState<SkillType>({} as SkillType);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [bookingOpen, setBookingOpen] = useState(false);
   const params = useParams();
   const navigate = useNavigate();
@@ -52,7 +46,11 @@ export default function SkillDetails() {
 
   useEffect(() => {
     getSkillById(skillId as string)
-      .then((response) => setSkillDetails(response.data))
+      .then((response) => {
+        setSkillDetails(response.data);
+        return getReviewsBySkillId(response.data.skillId);
+      })
+      .then((res) => setReviews(res.data))
       .catch((err) => console.error(err));
   }, [skillId]);
 
@@ -179,6 +177,7 @@ export default function SkillDetails() {
                   <Button
                     variant="outlined"
                     fullWidth
+                    onClick={() => navigate(`/chat/${skillDetails.teacherId}`)}
                     sx={{ fontSize: 13, fontWeight: 600 }}
                   >
                     Send Message
@@ -291,6 +290,7 @@ export default function SkillDetails() {
                   <Button
                     variant="outlined"
                     fullWidth
+                    onClick={() => navigate(`/chat/${skillDetails.teacherId}`)}
                     sx={{ fontWeight: 600, fontSize: 13 }}
                   >
                     Message Teacher
@@ -366,10 +366,15 @@ export default function SkillDetails() {
                 </Box>
               </Box>
 
+              {reviews.length === 0 && (
+                <Typography sx={{ fontSize: 14, color: "#94a3b8", textAlign: "center", py: 4 }}>
+                  No reviews yet. Be the first to review!
+                </Typography>
+              )}
               <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                {mockReviews.map(({ name, initials, stars, date, text }) => (
+                {reviews.map((review) => (
                   <Card
-                    key={name}
+                    key={review.reviewId}
                     sx={{
                       borderRadius: "10px",
                       border: "1px solid #e2e8f0",
@@ -389,26 +394,28 @@ export default function SkillDetails() {
                             fontSize: 13,
                           }}
                         >
-                          {initials}
+                          {review.reviewerId.slice(0, 2).toUpperCase()}
                         </Avatar>
                         <Box>
                           <Typography sx={{ fontWeight: 700, fontSize: 13.5, color: "#0f172a" }}>
-                            {name}
+                            Verified Student
                           </Typography>
                           <Box sx={{ display: "flex", gap: 0.25 }}>
                             {Array.from({ length: 5 }).map((_, i) => (
                               <StarRoundedIcon
                                 key={i}
-                                sx={{ fontSize: 13, color: i < stars ? "#f59e0b" : "#e2e8f0" }}
+                                sx={{ fontSize: 13, color: i < review.rating ? "#f59e0b" : "#e2e8f0" }}
                               />
                             ))}
                           </Box>
                         </Box>
                       </Box>
-                      <Typography sx={{ fontSize: 12, color: "#94a3b8" }}>{date}</Typography>
+                      <Typography sx={{ fontSize: 12, color: "#94a3b8" }}>
+                        {timeAgo(review.createdAt)}
+                      </Typography>
                     </Box>
                     <Typography sx={{ fontSize: 13.5, lineHeight: 1.65, color: "#475569" }}>
-                      {text}
+                      {review.content}
                     </Typography>
                   </Card>
                 ))}
