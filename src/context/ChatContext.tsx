@@ -45,7 +45,7 @@ export default function ChatProvider({
           }
         },
       );
-    };
+    }; 
     initializeConnection();
     return () => {
       newConnection.off("ReceiveMessage");
