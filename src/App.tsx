@@ -9,6 +9,8 @@ import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./Components/Auth/ProtectedRoute";
 import ChatProvider from "./context/ChatContext";
 import ChatPage from "./Components/Chat/ChatPage";
+import TeacherDashboard from "./Components/Teacher/TeacherDashboard";
+import MySessions from "./Components/Sessions/MySessions";
 function App() {
   return (
     <AuthProvider>
@@ -22,6 +24,10 @@ function App() {
               <Route path="/skills/:id" element={<SkillDetails />} />
               <Route path="/chat" element={<ChatPage />} />
               <Route path="/chat/:userId" element={<ChatPage />} />
+              <Route path="/my-sessions" element={<MySessions />} />
+            </Route>
+            <Route element={<ProtectedRoute role="Teacher" />}>
+              <Route path="/teacher/dashboard" element={<TeacherDashboard/>} />
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />

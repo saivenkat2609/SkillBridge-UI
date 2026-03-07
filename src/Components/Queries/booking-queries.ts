@@ -14,3 +14,5 @@ export const createBooking = (data: {
   scheduledAt: string;
   durationInMinutes: number;
 }) => api.post("/api/bookings", data);
+
+export const getMyBookings = () => api.get("/api/bookings/my");
