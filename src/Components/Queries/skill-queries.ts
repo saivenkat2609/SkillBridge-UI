@@ -24,6 +24,8 @@ export const createSkill = (data: FormData) =>
 export const getReviewsBySkillId = (skillId: number) =>
   api.get<Review[]>(`/api/review?skillId=${skillId}`);
 
+export const getTeacherStats = () => api.get(`/api/teachers/stats`);
+
 export interface Review {
   reviewId: number;
   rating: number;

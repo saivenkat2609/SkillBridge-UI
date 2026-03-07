@@ -88,16 +88,36 @@ export default function Header() {
         <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, flexShrink: 0 }}>
           {userData ? (
             <>
-              {userData.role === "Teacher" && (
+              {userData.role !== "Teacher" && (
                 <Button
-                  variant="contained"
+                  variant="text"
                   size="small"
-                  startIcon={<AddIcon sx={{ fontSize: "16px !important" }} />}
-                  onClick={() => navigate("/skills/create")}
-                  sx={{ px: 2 }}
+                  onClick={() => navigate("/my-sessions")}
+                  sx={{ color: "#64748b", px: 2, "&:hover": { color: "#4f46e5" } }}
                 >
-                  Create Skill
+                  My Sessions
                 </Button>
+              )}
+              {userData.role === "Teacher" && (
+                <>
+                  <Button
+                    variant="text"
+                    size="small"
+                    onClick={() => navigate("/teacher/dashboard")}
+                    sx={{ color: "#64748b", px: 2, "&:hover": { color: "#4f46e5" } }}
+                  >
+                    Dashboard
+                  </Button>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    startIcon={<AddIcon sx={{ fontSize: "16px !important" }} />}
+                    onClick={() => navigate("/skills/create")}
+                    sx={{ px: 2 }}
+                  >
+                    Create Skill
+                  </Button>
+                </>
               )}
 
               <Tooltip title="Messages">
