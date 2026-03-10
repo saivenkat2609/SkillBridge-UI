@@ -25,15 +25,6 @@ const features = [
   { icon: "⭐", title: "Verified Reviews", desc: "Transparent ratings from real students" },
 ];
 
-const GoogleIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 20 20">
-    <path fill="#4285F4" d="M19.8 10.2c0-.6-.1-1.3-.2-1.9H10v3.6h5.5c-.2 1.2-1 2.2-2.1 2.9v2.3h3.4c2-1.8 3-4.5 3-7.9z" />
-    <path fill="#34A853" d="M10 20c2.8 0 5.2-.9 6.9-2.5l-3.4-2.3c-.9.6-2.1 1-3.5 1-2.7 0-5-1.8-5.8-4.3H.7v2.4C2.4 17.8 5.9 20 10 20z" />
-    <path fill="#FBBC05" d="M4.2 11.9c-.2-.6-.3-1.2-.3-1.9s.1-1.3.3-1.9V5.7H.7C.3 6.9 0 8.4 0 10s.2 3.1.7 4.3l3.5-2.4z" />
-    <path fill="#EA4335" d="M10 4c1.5 0 2.9.5 4 1.5l3-3C15.2.9 12.8 0 10 0 5.9 0 2.4 2.2.7 5.7l3.5 2.4C5 5.8 7.3 4 10 4z" />
-  </svg>
-);
-
 export default function Login() {
   const navigate = useNavigate();
   const { login } = useAuth();
