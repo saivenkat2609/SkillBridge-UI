@@ -46,7 +46,7 @@ export default function Header() {
       >
         {/* Logo */}
         <Box
-          onClick={() => navigate("/")}
+          onClick={() => navigate(userData ? "/skills" : "/")}
           sx={{
             display: "flex",
             alignItems: "center",

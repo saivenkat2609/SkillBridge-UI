@@ -42,7 +42,7 @@ export default function Login() {
     try {
       const res = await loginUser({ email, password, rememberMe });
       login(res.data);
-      navigate("/");
+      navigate("/skills");
     } catch (err: any) {
       setError(err.response?.data?.message || "Invalid email or password. Please try again.");
     } finally {
@@ -340,7 +340,7 @@ export default function Login() {
                   if (res.data.isNewUser) {
                     navigate("/onboarding");
                   } else {
-                    navigate("/");
+                    navigate("/skills");
                   }
                 } catch {
                   setError("Google sign-in failed. Please try again.");
