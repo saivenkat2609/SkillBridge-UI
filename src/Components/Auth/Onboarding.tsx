@@ -33,7 +33,7 @@ export default function Onboarding() {
     try {
       const res = await updateRole(selected);
       login(res.data);
-      navigate("/");
+      navigate("/skills");
     } catch {
       setLoading(false);
     }

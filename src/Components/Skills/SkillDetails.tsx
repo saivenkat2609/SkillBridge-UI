@@ -84,7 +84,7 @@ export default function SkillDetails() {
           <Box sx={{ maxWidth: 1200, mx: "auto" }}>
             <Button
               startIcon={<ArrowBackIcon sx={{ fontSize: "16px !important" }} />}
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/skills")}
               sx={{
                 color: "#64748b",
                 fontSize: 13,

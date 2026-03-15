@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { BrowserRouter, Route, Routes, useNavigate, useLocation } from "react-router";
 import Header from "./Components/Header/Header";
+import HomePage from "./Components/Home/HomePage";
 import SkillsGrid from "./Components/Skills/SkillsGrid";
 import SkillDetails from "./Components/Skills/SkillDetails";
 import CreateSkill from "./Components/Skills/CreateSkill";
@@ -45,8 +46,9 @@ function App() {
           <OnboardingGuard />
           <Header />
           <Routes>
+            <Route path="/" element={<HomePage />} />
             <Route element={<ProtectedRoute />}>
-              <Route path="/" element={<SkillsGrid />} />
+              <Route path="/skills" element={<SkillsGrid />} />
               <Route path="/skills/create" element={<CreateSkill />} />
               <Route path="/skills/:id" element={<SkillDetails />} />
               <Route path="/chat" element={<ChatPage />} />

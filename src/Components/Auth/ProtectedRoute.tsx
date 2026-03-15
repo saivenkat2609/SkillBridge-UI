@@ -8,7 +8,7 @@ export default function ProtectedRoute({role}: Readonly<{role?: string}>) {
     return <Navigate to="/login" />;
   }
   if(role && userData.role !== role){
-    return <Navigate to="/" />;
+    return <Navigate to="/skills" />;
   }
   return <Outlet />;
 }
